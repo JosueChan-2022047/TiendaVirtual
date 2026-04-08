@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Panel de Control - Tienda</title>
+    <link rel="stylesheet" th:href="@{/Style.css}">
+</head>
+<body>
+<div class="dashboard">
+    <header>
+        <h1>Gestión de Tienda Virtual</h1>
+        <p>Bienvenido al panel de administración</p>
+    </header>
+
+    <div class="menu-grid">
+        <div class="card">
+            <h3>📦 Productos</h3>
+            <p>Gestionar inventario y precios.</p>
+            <a th:href="@{/productos}" class="btn">Ver Catálogo</a>
+        </div>
+        <div class="card">
+            <h3>👥 Clientes</h3>
+            <p>Registro y base de datos.</p>
+            <a th:href="@{/clientes}" class="btn">Ver Clientes</a>
+        </div>
+        <div class="card">
+            <h3>💰 Ventas</h3>
+            <p>Historial y nuevas facturas.</p>
+            <a th:href="@{/ventas}" class="btn">Ir a Ventas</a>
+        </div>
+    </div>
+
+    <footer style="margin-top: 2rem;">
+        <a th:href="@{/login}" class="btn-logout">Cerrar Sesión</a>
+    </footer>
+</div>
+</body>
+</html>
