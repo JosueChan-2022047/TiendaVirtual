@@ -1,22 +1,53 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
+    <meta charset="UTF-8">
     <title>Login</title>
+
     <link rel="stylesheet" th:href="@{/loginP.css}">
 </head>
 <body>
 
-<h2>Iniciar Sesión</h2>
+<div class="wrapper">
+    <div class="card-switch">
+        <label class="switch">
+            <input type="checkbox" class="toggle">
+            <span class="slider"></span>
+            <span class="card-side"></span>
 
-<form action="/login" method="post">
-    <label>Usuario:</label>
-    <input type="text" name="username">
+            <div class="flip-card__inner">
 
-    <label>Contraseña:</label>
-    <input type="password" name="password">
+                <!-- LOGIN -->
+                <div class="flip-card__front">
+                    <div class="title">Iniciar Sesión</div>
 
-    <button type="submit">Entrar</button>
-</form>
+                    <form class="flip-card__form" th:action="@{/login}" method="post">
+                        <input class="flip-card__input" name="usuario" placeholder="Usuario" type="text" required>
+                        <input class="flip-card__input" name="password" placeholder="Contraseña" type="password" required>
+                        <button class="flip-card__btn">Ingresar</button>
+                    </form>
+
+                    <p th:if="${param.error}" class="error">
+                        Usuario o contraseña incorrectos
+                    </p>
+                </div>
+
+                <!-- REGISTER -->
+                <div class="flip-card__back">
+                    <div class="title">Registrarse</div>
+
+                    <form class="flip-card__form" th:action="@{/registro}" method="post">
+                        <input class="flip-card__input" name="nombre" placeholder="Nombre" type="text">
+                        <input class="flip-card__input" name="email" placeholder="Correo" type="email">
+                        <input class="flip-card__input" name="password" placeholder="Contraseña" type="password">
+                        <button class="flip-card__btn">Registrar</button>
+                    </form>
+                </div>
+
+            </div>
+        </label>
+    </div>
+</div>
 
 </body>
 </html>
