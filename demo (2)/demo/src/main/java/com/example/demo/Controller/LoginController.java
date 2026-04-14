@@ -8,19 +8,19 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class LoginController {
 
-    @GetMapping("/")
+    @GetMapping("/login")
     public String login() {
         return "login";
     }
 
     @PostMapping("/login")
-    public String procesarLogin(@RequestParam String username,
-                                @RequestParam String password) {
+    public String validar(@RequestParam String usuario,
+                          @RequestParam String password) {
 
-        if(username.equals("admin") && password.equals("1234")) {
+        if (usuario.equals("admin") && password.equals("1234")) {
             return "redirect:/home";
         }
 
-        return "login";
+        return "redirect:/login?error=true";
     }
 }
