@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <title>Login</title>
-
     <link rel="stylesheet" th:href="@{/loginP.css}">
 </head>
 <body>
@@ -17,9 +16,15 @@
 
             <div class="flip-card__inner">
 
-                <!-- LOGIN -->
                 <div class="flip-card__front">
                     <div class="title">Iniciar Sesión</div>
+
+                    <p th:if="${param.registrado}" style="color: #2ecc71; font-size: 0.9rem; font-weight: bold;">
+                        ¡Registro exitoso! Ya puedes entrar.
+                    </p>
+                    <p th:if="${param.logout}" style="color: #3498db; font-size: 0.9rem;">
+                        Sesión cerrada correctamente.
+                    </p>
 
                     <form class="flip-card__form" th:action="@{/login}" method="post">
                         <input class="flip-card__input" name="usuario" placeholder="Usuario" type="text" required>
@@ -27,21 +32,24 @@
                         <button class="flip-card__btn">Ingresar</button>
                     </form>
 
-                    <p th:if="${param.error}" class="error">
+                    <p th:if="${param.error}" class="error" style="color: #e74c3c;">
                         Usuario o contraseña incorrectos
                     </p>
                 </div>
 
-                <!-- REGISTER -->
                 <div class="flip-card__back">
                     <div class="title">Registrarse</div>
 
                     <form class="flip-card__form" th:action="@{/registro}" method="post">
-                        <input class="flip-card__input" name="nombre" placeholder="Nombre" type="text">
-                        <input class="flip-card__input" name="email" placeholder="Correo" type="email">
-                        <input class="flip-card__input" name="password" placeholder="Contraseña" type="password">
+                        <input class="flip-card__input" name="username" placeholder="Nombre de Usuario" type="text" required>
+                        <input class="flip-card__input" name="email" placeholder="Correo" type="email" required>
+                        <input class="flip-card__input" name="password" placeholder="Contraseña" type="password" required>
                         <button class="flip-card__btn">Registrar</button>
                     </form>
+
+                    <p th:if="${param.errorRegistro}" class="error" style="color: #e74c3c;">
+                        Error al crear cuenta. Prueba otro nombre.
+                    </p>
                 </div>
 
             </div>
