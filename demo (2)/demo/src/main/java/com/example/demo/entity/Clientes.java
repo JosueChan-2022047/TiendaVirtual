@@ -8,20 +8,23 @@ public class Clientes {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer dpi_cliente;
+    @Column(name = "dpi_cliente")
+    private Long dpi_cliente; // CAMBIADO: Long coincide con BIGINT de MySQL
 
     private String nombre_cliente;
     private String apellido_cliente;
     private String direccion;
     private Integer estado;
 
-    public Integer getDpi_cliente() {
+
+    public Long getDpi_cliente() {
         return dpi_cliente;
     }
 
-    public void setDpi_cliente(Integer dpi_cliente) {
+    public void setDpi_cliente(Long dpi_cliente) {
         this.dpi_cliente = dpi_cliente;
     }
+
 
     public String getNombre_cliente() {
         return nombre_cliente;
