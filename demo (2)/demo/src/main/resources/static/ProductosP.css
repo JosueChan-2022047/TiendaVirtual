@@ -1,0 +1,120 @@
+/* Configuración General */
+:root {
+    --primary-gradient: linear-gradient(135deg, #11998e, #38ef7d);
+    --secondary-color: #6c757d;
+    --bg-light: #f8f9fa;
+    --white: #ffffff;
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+body {
+    background-color: var(--bg-light);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Navbar Personalizada */
+.custom-nav {
+    background: var(--primary-gradient);
+    padding: 1rem 2rem;
+    box-shadow: var(--shadow);
+    color: white;
+}
+
+.navbar-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.back-link {
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    transition: transform 0.2s;
+}
+
+.back-link:hover {
+    color: #e0e0e0;
+    transform: translateX(-5px);
+}
+
+/* Contenedor de la Tabla */
+.container {
+    margin-top: 2rem;
+    border-radius: 15px;
+    border: none;
+}
+
+h2 {
+    color: #333;
+    font-weight: 700;
+}
+
+/* Estilos de la Tabla */
+.table {
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.table-dark {
+    background-color: #2d3436;
+    border: none;
+}
+
+.table-hover tbody tr:hover {
+    background-color: #f1f2f6;
+    transition: 0.3s;
+}
+
+/* Badges de Estado */
+.badge {
+    padding: 0.5em 1em;
+    border-radius: 20px;
+    font-weight: 500;
+}
+
+.bg-primary { background-color: #4facfe !important; } /* Activo */
+.bg-danger { background-color: #ff6b6b !important; }  /* Inactivo */
+
+/* Estilos del Modal */
+.modal-content {
+    border-radius: 15px;
+    border: none;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+.modal-header {
+    background: var(--primary-gradient);
+    color: white;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+}
+
+.btn-close {
+    filter: brightness(0) invert(1); /* Hace la X blanca */
+}
+
+/* Botones */
+.btn-success {
+    background: var(--primary-gradient);
+    border: none;
+    padding: 0.6rem 1.2rem;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.btn-success:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 15px rgba(56, 239, 125, 0.4);
+}
+
+.btn-warning {
+    background-color: #f9ca24;
+    border: none;
+    color: #333;
+}
+
+.btn-danger {
+    background-color: #eb4d4b;
+    border: none;
+}
