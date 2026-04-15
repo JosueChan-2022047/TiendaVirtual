@@ -15,6 +15,8 @@ public class Productos {
     private Integer stock;
     private Integer estado;
 
+
+
     public Integer getCodigo_producto() {
         return codigo_producto;
     }
