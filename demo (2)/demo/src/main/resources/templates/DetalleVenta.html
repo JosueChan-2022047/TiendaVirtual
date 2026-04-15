@@ -4,101 +4,118 @@
     <meta charset="UTF-8">
     <title>Sistema de Ventas - Detalles</title>
     <link rel="stylesheet" th:href="@{/DetalleVentaP.css}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
 
-<header class="header-sistema">
-    <div class="header-content">
-        <a th:href="@{/home}" class="btn-volver">← Volver al Home</a>
-        <h1 class="header-title">SISTEMA DE VENTAS</h1>
+<nav class="custom-nav">
+    <div class="container-fluid d-flex justify-content-between align-items-center">
+        <a th:href="@{/home}" class="back-link">← Volver al Home</a>
+        <span class="navbar-title">SISTEMA DE VENTAS</span>
     </div>
-</header>
+</nav>
 
-<main class="contenedor-principal">
-    <div class="tarjeta-header">
-        <h2 class="titulo-registro">Registro de Detalles</h2>
-        <button class="btn-generar" onclick="abrirModalCrear()">+ Generar Detalle</button>
+<main class="container bg-white p-0">
+    <div class="d-flex justify-content-between align-items-center p-4 bg-white">
+        <h2>Registro de Detalles</h2>
+        <button class="btn btn-success" onclick="abrirModalCrear()">+ Generar Detalle</button>
     </div>
 
-    <table class="tabla-datos">
-        <thead>
-        <tr>
-            <th>ID</th>
-            <th>CANTIDAD</th>
-            <th>PRECIO U.</th>
-            <th>SUBTOTAL</th>
-            <th>PRODUCTO</th>
-            <th>VENTA</th>
-            <th>ACCIONES</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="det : ${detalles}" th:id="'fila-' + ${det.codigo_detalle_venta}">
-            <td th:text="${det.codigo_detalle_venta}"></td>
-            <td th:text="${det.cantidad}"></td>
-            <td th:text="${det.precio_unitario}"></td>
-            <td th:text="${det.subtotal}"></td>
-            <td th:text="${det.producto != null ? det.producto.codigo_producto : 'N/A'}"></td>
-            <td th:text="${det.venta != null ? det.venta.codigo_venta : 'N/A'}"></td>
-            <td>
-                <div class="acciones-flex">
-                    <button class="btn-amarillo"
-                            th:onclick="`abrirModalEditar(${det.codigo_detalle_venta}, ${det.cantidad}, ${det.precio_unitario}, ${det.producto != null ? det.producto.codigo_producto : 0}, ${det.venta != null ? det.venta.codigo_venta : 0})`">
-                        Editar
-                    </button>
-                    <button class="btn-rojo" th:onclick="'eliminarDetalle(' + ${det.codigo_detalle_venta} + ')'">Eliminar</button>
-                </div>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>CANTIDAD</th>
+                <th>PRECIO U.</th>
+                <th>SUBTOTAL</th>
+                <th>PRODUCTO</th>
+                <th>VENTA</th>
+                <th>ACCIONES</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="det : ${detalles}">
+                <td th:text="${det.codigo_detalle_venta}"></td>
+                <td th:text="${det.cantidad}"></td>
+                <td th:text="${det.precio_unitario}"></td>
+                <td>
+                    <span class="badge bg-primary" th:text="'Q' + ${det.subtotal}"></span>
+                </td>
+                <td th:text="${det.producto != null ? det.producto.codigo_producto : 'N/A'}"></td>
+                <td th:text="${det.venta != null ? det.venta.codigo_venta : 'N/A'}"></td>
+                <td>
+                    <div class="d-flex gap-2">
+                        <button class="btn btn-warning btn-sm"
+                                th:onclick="`abrirModalEditar(${det.codigo_detalle_venta}, ${det.cantidad}, ${det.precio_unitario}, ${det.producto != null ? det.producto.codigo_producto : 0}, ${det.venta != null ? det.venta.codigo_venta : 0})`">
+                            Editar
+                        </button>
+                        <button class="btn btn-danger btn-sm"
+                                th:onclick="'eliminarDetalle(' + ${det.codigo_detalle_venta} + ')'">
+                            Eliminar
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 </main>
 
-<div id="modalDetalle" class="modal">
-    <div class="modal-content">
-        <h3 id="modalTitulo">Nuevo Detalle</h3>
-        <form id="formDetalle">
-            <input type="hidden" id="edit-id">
-
-            <div class="form-group">
-                <label>ID Producto:</label>
-                <input type="number" id="edit-producto" required>
+<div class="modal fade" id="modalDetalle" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="border-radius: 16px; border: none; overflow: hidden;">
+            <div class="modal-header custom-nav" style="border-radius: 0;">
+                <h5 class="modal-title text-white" id="modalTitulo">Nuevo Detalle</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
+            <form id="formDetalle">
+                <div class="modal-body p-4">
+                    <input type="hidden" id="edit-id">
 
-            <div class="form-group">
-                <label>ID Venta:</label>
-                <input type="number" id="edit-venta" required>
-            </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">ID Producto</label>
+                            <input type="number" id="edit-producto" class="form-control" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">ID Venta</label>
+                            <input type="number" id="edit-venta" class="form-control" required>
+                        </div>
+                    </div>
 
-            <div class="form-group">
-                <label>Cantidad:</label>
-                <input type="number" id="edit-cantidad" required oninput="calcularSubtotal()">
-            </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">Cantidad</label>
+                            <input type="number" id="edit-cantidad" class="form-control" required oninput="calcularSubtotal()">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">Precio Unitario</label>
+                            <input type="number" step="0.01" id="edit-precio" class="form-control" required oninput="calcularSubtotal()">
+                        </div>
+                    </div>
 
-            <div class="form-group">
-                <label>Precio Unitario:</label>
-                <input type="number" step="0.01" id="edit-precio" required oninput="calcularSubtotal()">
-            </div>
-
-            <div class="form-group">
-                <label>Subtotal:</label>
-                <input type="number" id="edit-subtotal" readonly style="background: #eee;">
-            </div>
-
-            <div style="text-align: right; margin-top: 20px;">
-                <button type="button" class="btn-rojo" onclick="cerrarModal()">Cancelar</button>
-                <button type="submit" class="btn-generar">Guardar Datos</button>
-            </div>
-        </form>
+                    <div class="mb-0">
+                        <label class="form-label fw-bold">Subtotal Estimado</label>
+                        <input type="number" id="edit-subtotal" class="form-control bg-light" readonly>
+                    </div>
+                </div>
+                <div class="modal-footer border-0 p-4 pt-0">
+                    <button type="button" class="btn btn-light px-4" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-success px-4">Guardar Registro</button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script th:inline="javascript">
-    const modal = document.getElementById('modalDetalle');
+    const modalBootstrap = new bootstrap.Modal(document.getElementById('modalDetalle'));
 
     function calcularSubtotal() {
-        const c = document.getElementById('edit-cantidad').value || 0;
-        const p = document.getElementById('edit-precio').value || 0;
+        const c = parseFloat(document.getElementById('edit-cantidad').value) || 0;
+        const p = parseFloat(document.getElementById('edit-precio').value) || 0;
         document.getElementById('edit-subtotal').value = (c * p).toFixed(2);
     }
 
@@ -106,7 +123,7 @@
         document.getElementById('modalTitulo').innerText = "Nuevo Detalle";
         document.getElementById('formDetalle').reset();
         document.getElementById('edit-id').value = "";
-        modal.style.display = "block";
+        modalBootstrap.show();
     }
 
     function abrirModalEditar(id, cant, prec, prodId, vtaId) {
@@ -117,29 +134,12 @@
         document.getElementById('edit-producto').value = prodId;
         document.getElementById('edit-venta').value = vtaId;
         calcularSubtotal();
-        modal.style.display = "block";
-    }
-
-    function cerrarModal() {
-        modal.style.display = "none";
-    }
-
-    function eliminarDetalle(id) {
-        if (confirm('¿Deseas eliminar el registro #' + id + '?')) {
-            fetch('/DetalleVenta/eliminar/' + id, { method: 'DELETE' })
-                .then(res => {
-                    if(res.ok) location.reload();
-                    else alert('Error al eliminar');
-                });
-        }
+        modalBootstrap.show();
     }
 
     document.getElementById('formDetalle').onsubmit = function(e) {
         e.preventDefault();
-
         const idVal = document.getElementById('edit-id').value;
-
-        // Estructura JSON exacta para Spring Boot
         const detalle = {
             codigo_detalle_venta: idVal ? parseInt(idVal) : null,
             cantidad: parseInt(document.getElementById('edit-cantidad').value),
@@ -153,20 +153,17 @@
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(detalle)
         }).then(res => {
-            if (res.ok) {
-                location.reload();
-            } else {
-                alert('Error al guardar. Verifica que el ID del Producto y el ID de la Venta existan en tu base de datos.');
-            }
-        }).catch(err => {
-            console.error("Error:", err);
-            alert('Error de conexión con el servidor.');
+            if (res.ok) location.reload();
+            else alert('Error al guardar. Verifica que los IDs existan.');
         });
     };
 
-    window.onclick = function(e) {
-        if (e.target == modal) cerrarModal();
-    };
+    function eliminarDetalle(id) {
+        if (confirm('¿Deseas eliminar este registro?')) {
+            fetch('/DetalleVenta/eliminar/' + id, { method: 'DELETE' })
+                .then(res => res.ok ? location.reload() : alert('Error al eliminar'));
+        }
+    }
 </script>
 </body>
 </html>
