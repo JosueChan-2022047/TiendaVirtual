@@ -1,10 +1,121 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+    <title>Gestión de Productos</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/ClientesP.css}"> </head>
+<body class="bg-light">
 
+<nav class="navbar mb-4 custom-nav">
+    <div class="container-fluid">
+        <a th:href="@{/home}" class="back-link">⬅ Volver al Home</a>
+        <span class="navbar-title">Gestión de Productos</span>
+    </div>
+</nav>
+
+<div class="container bg-white p-4 shadow-sm rounded">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2>Inventario de Productos</h2>
+        <button type="button" class="btn btn-success" onclick="nuevoProducto()">+ Nuevo Producto</button>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead class="table-dark">
+            <tr>
+                <th>Código</th>
+                <th>Nombre</th>
+                <th>Precio</th>
+                <th>Stock</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="p : ${listaProductos}">
+                <td th:text="${p.codigo_producto}">1</td>
+                <td th:text="${p.nombre_producto}">Producto</td>
+                <td th:text="'Q' + ${p.precio}">Q0.00</td>
+                <td th:text="${p.stock}">0</td>
+                <td>
+                    <span class="badge" th:classappend="${p.estado == 1 ? 'bg-primary' : 'bg-danger'}"
+                          th:text="${p.estado == 1 ? 'Activo' : 'Inactivo'}"></span>
+                </td>
+                <td>
+                    <button class="btn btn-sm btn-warning"
+                            th:onclick="prepararEditar([[${p.codigo_producto}]], [[${p.nombre_producto}]], [[${p.precio}]], [[${p.stock}]], [[${p.estado}]])">
+                        Editar
+                    </button>
+                    <a th:href="@{/Productos/eliminar/{id}(id=${p.codigo_producto})}" class="btn btn-sm btn-danger" onclick="return confirm('¿Eliminar producto?')">Eliminar</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="modal fade" id="productoModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTitle">Nuevo Producto</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form th:action="@{/Productos/guardar}" method="post">
+                <div class="modal-body">
+                    <input type="hidden" name="codigo_producto" id="modal_id">
+                    <div class="mb-3">
+                        <label class="form-label">Nombre del Producto</label>
+                        <input type="text" name="nombre_producto" id="modal_nombre" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Precio (Q)</label>
+                        <input type="number" step="0.01" name="precio" id="modal_precio" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Stock inicial</label>
+                        <input type="number" name="stock" id="modal_stock" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Estado</label>
+                        <select name="estado" id="modal_estado" class="form-select">
+                            <option value="1">Activo</option>
+                            <option value="0">Inactivo</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Guardar Producto</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    const modal = new bootstrap.Modal(document.getElementById('productoModal'));
+
+    function nuevoProducto() {
+        document.getElementById('modalTitle').innerText = 'Nuevo Producto';
+        document.getElementById('modal_id').value = '';
+        document.getElementById('modal_nombre').value = '';
+        document.getElementById('modal_precio').value = '';
+        document.getElementById('modal_stock').value = '';
+        document.getElementById('modal_estado').value = '1';
+        modal.show();
+    }
+
+    function prepararEditar(id, nombre, precio, stock, estado) {
+        document.getElementById('modalTitle').innerText = 'Editar Producto';
+        document.getElementById('modal_id').value = id;
+        document.getElementById('modal_nombre').value = nombre;
+        document.getElementById('modal_precio').value = precio;
+        document.getElementById('modal_stock').value = stock;
+        document.getElementById('modal_estado').value = estado;
+        modal.show();
+    }
+</script>
 </body>
 </html>
