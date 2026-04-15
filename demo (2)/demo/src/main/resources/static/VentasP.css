@@ -1,0 +1,149 @@
+/* Variables de Identidad Visual - VUELTA AL VERDE */
+:root {
+    --primary-gradient: linear-gradient(135deg, #11998e, #38ef7d); /* El verde original */
+    --success-color: #2ecc71;
+    --danger-color: #e74c3c;
+    --dark-blue: #2c3e50;
+    --light-gray: #f4f7f6;
+}
+
+body {
+    background-color: var(--light-gray);
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* Navbar con estilo original Verde */
+.custom-nav {
+    background: var(--primary-gradient);
+    padding: 1rem 2rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    color: white;
+}
+
+.navbar-title {
+    font-size: 1.4rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+}
+
+.back-link {
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+}
+
+.back-link:hover {
+    color: var(--dark-blue);
+    transform: translateX(-3px);
+}
+
+/* Contenedor Principal */
+.container {
+    margin-top: 2.5rem;
+    border: none;
+    transition: all 0.3s ease;
+}
+
+h2 {
+    color: var(--dark-blue);
+    font-weight: 700;
+    position: relative;
+}
+
+/* Tabla de Ventas */
+.table {
+    border-collapse: separate;
+    border-spacing: 0 8px;
+}
+
+.table thead th {
+    background-color: var(--dark-blue);
+    color: white;
+    border: none;
+    padding: 15px;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+}
+
+.table tbody tr {
+    background-color: white;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    border-radius: 8px;
+}
+
+.table tbody td {
+    padding: 15px;
+    vertical-align: middle;
+    border: none;
+}
+
+/* Badges de Estado de Venta */
+.badge {
+    padding: 8px 12px;
+    font-size: 0.75rem;
+    border-radius: 6px;
+    text-transform: uppercase;
+}
+
+/* Colores de estado originales */
+.bg-primary { background-color: #3498db !important; } /* Pagado */
+.bg-danger { background-color: #e67e22 !important; }  /* Pendiente */
+
+/* Modal y Formulario */
+.modal-content {
+    border-radius: 20px;
+    border: none;
+}
+
+.modal-header {
+    background: var(--primary-gradient); /* Encabezado verde */
+    color: white;
+    border-radius: 20px 20px 0 0;
+}
+
+.form-label {
+    font-weight: 600;
+    color: var(--dark-blue);
+    margin-bottom: 0.5rem;
+}
+
+.form-control, .form-select {
+    border-radius: 10px;
+    padding: 10px 15px;
+    border: 1px solid #dcdde1;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: #38ef7d; /* Brillo verde al seleccionar */
+    box-shadow: 0 0 0 0.2rem rgba(56, 239, 125, 0.25);
+}
+
+/* Botones de Acción - Vuelven a ser Verdes */
+.btn-success {
+    background: var(--primary-gradient);
+    border: none;
+    border-radius: 10px;
+    padding: 10px 20px;
+    font-weight: 600;
+}
+
+.btn-warning {
+    background-color: #f1c40f;
+    color: white;
+    border: none;
+}
+
+.btn-danger {
+    background-color: #e74c3c;
+    border: none;
+}
+
+.btn:hover {
+    filter: brightness(1.1);
+    transform: translateY(-1px);
+}
