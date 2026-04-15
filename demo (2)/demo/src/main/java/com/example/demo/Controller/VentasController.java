@@ -2,68 +2,50 @@ package com.example.demo.Controller;
 
 import com.example.demo.entity.Ventas;
 import com.example.demo.service.VentaService;
-import jakarta.validation.Valid;
-import org.springframework.http.*;
-import org.springframework.validation.BindingResult;
+import com.example.demo.service.ClienteService;
+import com.example.demo.service.UsuarioService; // Asegúrate de tener este servicio creado
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.time.LocalDate;
 
-@RestController
-@RequestMapping("/api/ventas")
+@Controller
+@RequestMapping("/Ventas")
 public class VentasController {
 
     private final VentaService ventaService;
+    private final ClienteService clienteService;
+    private final UsuarioService usuarioService;
 
-    public VentasController(VentaService ventaService){
+    public VentasController(VentaService ventaService, ClienteService clienteService, UsuarioService usuarioService) {
         this.ventaService = ventaService;
+        this.clienteService = clienteService;
+        this.usuarioService = usuarioService;
     }
 
     @GetMapping
-    public List<Ventas> listar(){
-        return ventaService.getAllVentas();
+    public String listar(Model model) {
+        model.addAttribute("listaVentas", ventaService.getAllVentas());
+        model.addAttribute("listaClientes", clienteService.getAllClientes());
+        model.addAttribute("listaUsuarios", usuarioService.getAllUsuarios());
+
+        Ventas nuevaVenta = new Ventas();
+        nuevaVenta.setFecha_venta(LocalDate.now()); // Fecha por defecto hoy
+        model.addAttribute("venta", nuevaVenta);
+
+        return "Ventas";
     }
 
-    @PostMapping
-    public ResponseEntity<Object> create(@Valid @RequestBody Ventas v, BindingResult br){
-        if (br.hasErrors()){
-            return ResponseEntity.badRequest().body(br.getAllErrors().get(0).getDefaultMessage());
-        }
-        try {
-            return new ResponseEntity<>(ventaService.saveVenta(v), HttpStatus.CREATED);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+    @PostMapping("/guardar")
+    public String guardar(@ModelAttribute("venta") Ventas venta) {
+        ventaService.saveVenta(venta);
+        return "redirect:/Ventas";
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Object> get(@PathVariable Integer id){
-        try {
-            return ResponseEntity.ok(ventaService.getVentaById(id));
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Object> delete(@PathVariable Integer id){
-        try {
-            ventaService.deleteVenta(id);
-            return ResponseEntity.status(202).build();
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Error al eliminar venta");
-        }
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<Object> update(@PathVariable Integer id, @Valid @RequestBody Ventas v, BindingResult br){
-        if (br.hasErrors()){
-            return ResponseEntity.badRequest().body(br.getAllErrors().get(0).getDefaultMessage());
-        }
-        try {
-            return ResponseEntity.ok(ventaService.updateVenta(id, v));
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+    @GetMapping("/eliminar/{id}")
+    public String eliminar(@PathVariable Integer id) {
+        ventaService.deleteVenta(id);
+        return "redirect:/Ventas";
     }
 }
