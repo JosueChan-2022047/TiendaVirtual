@@ -1,10 +1,172 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Sistema de Ventas - Detalles</title>
+    <link rel="stylesheet" th:href="@{/DetalleVentaP.css}">
 </head>
 <body>
 
+<header class="header-sistema">
+    <div class="header-content">
+        <a th:href="@{/home}" class="btn-volver">← Volver al Home</a>
+        <h1 class="header-title">SISTEMA DE VENTAS</h1>
+    </div>
+</header>
+
+<main class="contenedor-principal">
+    <div class="tarjeta-header">
+        <h2 class="titulo-registro">Registro de Detalles</h2>
+        <button class="btn-generar" onclick="abrirModalCrear()">+ Generar Detalle</button>
+    </div>
+
+    <table class="tabla-datos">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>CANTIDAD</th>
+            <th>PRECIO U.</th>
+            <th>SUBTOTAL</th>
+            <th>PRODUCTO</th>
+            <th>VENTA</th>
+            <th>ACCIONES</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="det : ${detalles}" th:id="'fila-' + ${det.codigo_detalle_venta}">
+            <td th:text="${det.codigo_detalle_venta}"></td>
+            <td th:text="${det.cantidad}"></td>
+            <td th:text="${det.precio_unitario}"></td>
+            <td th:text="${det.subtotal}"></td>
+            <td th:text="${det.producto != null ? det.producto.codigo_producto : 'N/A'}"></td>
+            <td th:text="${det.venta != null ? det.venta.codigo_venta : 'N/A'}"></td>
+            <td>
+                <div class="acciones-flex">
+                    <button class="btn-amarillo"
+                            th:onclick="`abrirModalEditar(${det.codigo_detalle_venta}, ${det.cantidad}, ${det.precio_unitario}, ${det.producto != null ? det.producto.codigo_producto : 0}, ${det.venta != null ? det.venta.codigo_venta : 0})`">
+                        Editar
+                    </button>
+                    <button class="btn-rojo" th:onclick="'eliminarDetalle(' + ${det.codigo_detalle_venta} + ')'">Eliminar</button>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</main>
+
+<div id="modalDetalle" class="modal">
+    <div class="modal-content">
+        <h3 id="modalTitulo">Nuevo Detalle</h3>
+        <form id="formDetalle">
+            <input type="hidden" id="edit-id">
+
+            <div class="form-group">
+                <label>ID Producto:</label>
+                <input type="number" id="edit-producto" required>
+            </div>
+
+            <div class="form-group">
+                <label>ID Venta:</label>
+                <input type="number" id="edit-venta" required>
+            </div>
+
+            <div class="form-group">
+                <label>Cantidad:</label>
+                <input type="number" id="edit-cantidad" required oninput="calcularSubtotal()">
+            </div>
+
+            <div class="form-group">
+                <label>Precio Unitario:</label>
+                <input type="number" step="0.01" id="edit-precio" required oninput="calcularSubtotal()">
+            </div>
+
+            <div class="form-group">
+                <label>Subtotal:</label>
+                <input type="number" id="edit-subtotal" readonly style="background: #eee;">
+            </div>
+
+            <div style="text-align: right; margin-top: 20px;">
+                <button type="button" class="btn-rojo" onclick="cerrarModal()">Cancelar</button>
+                <button type="submit" class="btn-generar">Guardar Datos</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script th:inline="javascript">
+    const modal = document.getElementById('modalDetalle');
+
+    function calcularSubtotal() {
+        const c = document.getElementById('edit-cantidad').value || 0;
+        const p = document.getElementById('edit-precio').value || 0;
+        document.getElementById('edit-subtotal').value = (c * p).toFixed(2);
+    }
+
+    function abrirModalCrear() {
+        document.getElementById('modalTitulo').innerText = "Nuevo Detalle";
+        document.getElementById('formDetalle').reset();
+        document.getElementById('edit-id').value = "";
+        modal.style.display = "block";
+    }
+
+    function abrirModalEditar(id, cant, prec, prodId, vtaId) {
+        document.getElementById('modalTitulo').innerText = "Editar Detalle #" + id;
+        document.getElementById('edit-id').value = id;
+        document.getElementById('edit-cantidad').value = cant;
+        document.getElementById('edit-precio').value = prec;
+        document.getElementById('edit-producto').value = prodId;
+        document.getElementById('edit-venta').value = vtaId;
+        calcularSubtotal();
+        modal.style.display = "block";
+    }
+
+    function cerrarModal() {
+        modal.style.display = "none";
+    }
+
+    function eliminarDetalle(id) {
+        if (confirm('¿Deseas eliminar el registro #' + id + '?')) {
+            fetch('/DetalleVenta/eliminar/' + id, { method: 'DELETE' })
+                .then(res => {
+                    if(res.ok) location.reload();
+                    else alert('Error al eliminar');
+                });
+        }
+    }
+
+    document.getElementById('formDetalle').onsubmit = function(e) {
+        e.preventDefault();
+
+        const idVal = document.getElementById('edit-id').value;
+
+        // Estructura JSON exacta para Spring Boot
+        const detalle = {
+            codigo_detalle_venta: idVal ? parseInt(idVal) : null,
+            cantidad: parseInt(document.getElementById('edit-cantidad').value),
+            precio_unitario: parseFloat(document.getElementById('edit-precio').value),
+            producto: { codigo_producto: parseInt(document.getElementById('edit-producto').value) },
+            venta: { codigo_venta: parseInt(document.getElementById('edit-venta').value) }
+        };
+
+        fetch('/DetalleVenta/guardar', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(detalle)
+        }).then(res => {
+            if (res.ok) {
+                location.reload();
+            } else {
+                alert('Error al guardar. Verifica que el ID del Producto y el ID de la Venta existan en tu base de datos.');
+            }
+        }).catch(err => {
+            console.error("Error:", err);
+            alert('Error de conexión con el servidor.');
+        });
+    };
+
+    window.onclick = function(e) {
+        if (e.target == modal) cerrarModal();
+    };
+</script>
 </body>
 </html>
