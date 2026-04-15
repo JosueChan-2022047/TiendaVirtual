@@ -2,58 +2,38 @@ package com.example.demo.service;
 
 import com.example.demo.entity.Usuarios;
 import com.example.demo.repository.UsuariosRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service
 public class UsuariosServiceImplements implements UsuarioService {
 
-    private UsuariosRepository usuarioRepository;
-
-    public UsuariosServiceImplements(UsuariosRepository usuarioRepository) {
-        this.usuarioRepository = usuarioRepository;
-    }
-
-    public void UsuarioServiceimplements(UsuariosRepository usuarioRepository) {
-        this.usuarioRepository = usuarioRepository;
-    }
+    @Autowired
+    private UsuariosRepository usuariosRepository;
 
     @Override
-    public List<Usuarios> getAllUsuarios() {
-        return usuarioRepository.findAll();
+    public Usuarios buscarPorUsername(String username) {
+        // Simplemente llamamos al repo. Si no lo encuentra, el repo devolverá null.
+        return usuariosRepository.findByUsername(username);
     }
 
-    @Override
-    public Usuarios getUsuarioById(Integer id) {
-        return usuarioRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
-    }
 
     @Override
-    public Usuarios saveUsuario(Usuarios usuario) {
-        return usuarioRepository.save(usuario);
-    }
+    public List<Usuarios> getAllUsuarios() { return usuariosRepository.findAll(); }
+
+    @Override
+    public Usuarios saveUsuario(Usuarios usuario) { return usuariosRepository.save(usuario); }
+
+    @Override
+    public void deleteUsuario(Integer id) { usuariosRepository.deleteById(id); }
+
+    @Override
+    public Usuarios getUsuarioById(Integer id) { return usuariosRepository.findById(id).orElse(null); }
 
     @Override
     public Usuarios updateUsuario(Integer id, Usuarios usuario) {
-        Usuarios existente = usuarioRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Usuario no existe"));
-
-        existente.setUsername(usuario.getUsername());
-        existente.setPassword(usuario.getPassword());
-        existente.setEmail(usuario.getEmail());
-        existente.setRol(usuario.getRol());
-        existente.setEstado(usuario.getEstado());
-
-        return usuarioRepository.save(existente);
-    }
-
-    @Override
-    public void deleteUsuario(Integer id) {
-        if (!usuarioRepository.existsById(id)) {
-            throw new RuntimeException("Este id no existe");
-        }
-        usuarioRepository.deleteById(id);
+        usuario.setCodigo_usuario(id);
+        return usuariosRepository.save(usuario);
     }
 }
