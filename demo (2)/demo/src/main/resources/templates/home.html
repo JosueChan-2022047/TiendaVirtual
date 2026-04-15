@@ -6,17 +6,61 @@
 </head>
 <body>
 
-<h1>Bienvenido a la Tienda Virtual</h1>
-
-<nav>
-    <ul>
+<nav class="navbar">
+    <span class="navbar-brand">🛒 Tienda Virtual</span>
+    <ul class="navbar-links">
         <li><a th:href="@{/Clientes}">Clientes</a></li>
         <li><a th:href="@{/Productos}">Productos</a></li>
         <li><a th:href="@{/Ventas}">Ventas</a></li>
-        <li><a th:href="@{/Usuarios}">Usuarios</a></li>
-        <li><a th:href="@{/login}">Cerrar sesión</a></li>
+        <li><a th:href="@{/DetalleVenta}">Detalles</a></li>
+
+        <li th:if="${session.usuarioLogueado?.rol == 'ADMIN'}">
+            <a th:href="@{/Usuarios}">Usuarios</a>
+        </li>
+        <li><a th:href="@{/logout}" class="logout">Cerrar sesión</a></li>
     </ul>
 </nav>
+
+<div class="hero">
+    <h1>Bienvenido a la Tienda Virtual</h1>
+    <p>Gestiona tus clientes, productos, ventas y usuarios desde aquí</p>
+</div>
+
+<div th:if="${param.logout}" class="alert alert-info">
+    Has cerrado sesión correctamente.
+</div>
+
+<div class="cards-grid">
+    <a th:href="@{/Clientes}" class="card">
+        <div class="card-icon" style="background:#e8fff4">👥</div>
+        <h3>Clientes</h3>
+        <p>Consulta y gestiona la información de tus clientes</p>
+    </a>
+
+    <a th:href="@{/Productos}" class="card">
+        <div class="card-icon" style="background:#e8f8ff">📦</div>
+        <h3>Productos</h3>
+        <p>Administra el catálogo y stock de productos</p>
+    </a>
+
+    <a th:href="@{/Ventas}" class="card">
+        <div class="card-icon" style="background:#fff8e8">💰</div>
+        <h3>Ventas</h3>
+        <p>Revisa el historial y detalle de ventas</p>
+    </a>
+
+    <a th:href="@{/DetalleVenta}" class="card">
+        <div class="card-icon" style="background:#e8e8ff">📋</div>
+        <h3>Detalle Venta</h3>
+        <p>Ver el desglose de artículos por cada factura</p>
+    </a>
+
+    <a th:href="@{/Usuarios}" class="card" th:if="${session.usuarioLogueado?.rol == 'ADMIN'}">
+        <div class="card-icon" style="background:#ffe8e8">👤</div>
+        <h3>Usuarios</h3>
+        <p>Controla los accesos y roles del sistema</p>
+    </a>
+</div>
 
 </body>
 </html>
