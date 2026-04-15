@@ -2,55 +2,48 @@ package com.example.demo.service;
 
 import com.example.demo.entity.DetalleVenta;
 import com.example.demo.repository.DetalleVentaRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional; // IMPORTANTE
 
 import java.util.List;
 
 @Service
 public class DetalleVentaServiceImplements implements DetalleVentaService {
 
-    private final DetalleVentaRepository detalleRepository;
+    @Autowired
+    private DetalleVentaRepository repository;
 
-    public DetalleVentaServiceImplements(DetalleVentaRepository detalleRepository) {
-        this.detalleRepository = detalleRepository;
+    @Override
+    @Transactional(readOnly = true)
+    public List<DetalleVenta> obtenerTodos() {
+        return repository.findAll();
     }
 
     @Override
-    public List<DetalleVenta> getAllDetalles() {
-        return detalleRepository.findAll();
+    @Transactional
+    public void guardar(DetalleVenta detalle) {
+        
+        if (detalle.getCantidad() != null && detalle.getPrecio_unitario() != null) {
+            detalle.setSubtotal(detalle.getCantidad() * detalle.getPrecio_unitario());
+        }
+        repository.save(detalle);
+    }
+
+    @Override
+    @Transactional
+    public void eliminar(Integer id) {
+        repository.deleteById(id);
+    }
+
+    @Override
+    public List<DetalleVenta> obtenerDetallesPorVenta(Integer id) {
+
+        return repository.findAll();
     }
 
     @Override
     public DetalleVenta getDetalleById(Integer id) {
-        return detalleRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Detalle no encontrado"));
-    }
-
-    @Override
-    public DetalleVenta saveDetalle(DetalleVenta detalle) {
-        detalle.setSubtotal(detalle.getCantidad() * detalle.getPrecio_unitario());
-        return detalleRepository.save(detalle);
-    }
-
-    @Override
-    public DetalleVenta updateDetalle(Integer id, DetalleVenta detalle) {
-        DetalleVenta existente = detalleRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Detalle no existe"));
-
-        existente.setCantidad(detalle.getCantidad());
-        existente.setPrecio_unitario(detalle.getPrecio_unitario());
-        existente.setSubtotal(detalle.getCantidad() * detalle.getPrecio_unitario());
-        existente.setProducto(detalle.getProducto());
-        existente.setVenta(detalle.getVenta());
-
-        return detalleRepository.save(existente);
-    }
-
-    @Override
-    public void deleteDetalle(Integer id) {
-        if (!detalleRepository.existsById(id)) {
-            throw new RuntimeException("Este id no existe");
-        }
-        detalleRepository.deleteById(id);
+        return repository.findById(id).orElse(null);
     }
 }
