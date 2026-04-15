@@ -17,4 +17,6 @@ public interface UsuarioService {
     Usuarios updateUsuario(Integer id, Usuarios usuario);
 
     void deleteUsuario(Integer id);
+
+    Object buscarPorUsername(String username);
 }
