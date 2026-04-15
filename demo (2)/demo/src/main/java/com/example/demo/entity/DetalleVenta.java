@@ -3,11 +3,12 @@ package com.example.demo.entity;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "detalle_venta")
+@Table(name = "detalleventa") // Corregido: en tu SQL es 'detalleventa', sin la 's'
 public class DetalleVenta {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "codigo_detalle_venta") // Recomendado especificar el nombre exacto
     private Integer codigo_detalle_venta;
 
     private Integer cantidad;
@@ -15,12 +16,13 @@ public class DetalleVenta {
     private Double subtotal;
 
     @ManyToOne
-    @JoinColumn(name = "producto_id")
+    @JoinColumn(name = "productos_codigo_producto") // Corregido: según tu script SQL
     private Productos producto;
 
     @ManyToOne
-    @JoinColumn(name = "venta_id")
+    @JoinColumn(name = "ventas_codigo_venta") // Corregido: según tu script SQL
     private Ventas venta;
+
 
     public Integer getCodigo_detalle_venta() {
         return codigo_detalle_venta;
@@ -59,7 +61,7 @@ public class DetalleVenta {
     }
 
     public void setProducto(Productos producto) {
-        this.producto = producto;
+
     }
 
     public Ventas getVenta() {
@@ -68,5 +70,8 @@ public class DetalleVenta {
 
     public void setVenta(Ventas venta) {
         this.venta = venta;
+    }
+
+    public void setId_detalle(Integer id) {
     }
 }
