@@ -1,7 +1,7 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "ventas")
@@ -11,18 +11,16 @@ public class Ventas {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer codigo_venta;
 
-    @Temporal(TemporalType.DATE)
-    private Date fecha_venta;
-
+    private LocalDate fecha_venta;
     private Double total;
     private Integer estado;
 
     @ManyToOne
-    @JoinColumn(name = "cliente_id")
+    @JoinColumn(name = "clientes_dpi_cliete")
     private Clientes cliente;
 
     @ManyToOne
-    @JoinColumn(name = "usuario_id")
+    @JoinColumn(name = "usuarios_codigo_usuario")
     private Usuarios usuario;
 
     public Integer getCodigo_venta() {
@@ -33,11 +31,11 @@ public class Ventas {
         this.codigo_venta = codigo_venta;
     }
 
-    public Date getFecha_venta() {
+    public LocalDate getFecha_venta() {
         return fecha_venta;
     }
 
-    public void setFecha_venta(Date fecha_venta) {
+    public void setFecha_venta(LocalDate fecha_venta) {
         this.fecha_venta = fecha_venta;
     }
 
