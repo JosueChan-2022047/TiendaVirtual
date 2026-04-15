@@ -23,7 +23,7 @@ public class DetalleVentaServiceImplements implements DetalleVentaService {
     @Override
     @Transactional
     public void guardar(DetalleVenta detalle) {
-        
+
         if (detalle.getCantidad() != null && detalle.getPrecio_unitario() != null) {
             detalle.setSubtotal(detalle.getCantidad() * detalle.getPrecio_unitario());
         }
