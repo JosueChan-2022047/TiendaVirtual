@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Home</title>
+    <title>Home - Tienda Virtual</title>
     <link rel="stylesheet" th:href="@{/homeP.css}">
 </head>
 <body>
 
 <nav class="navbar">
-    <span class="navbar-brand">🛒 Tienda Virtual</span>
+    <span class="navbar-brand">🏪Tienda Virtual</span>
+
     <ul class="navbar-links">
         <li><a th:href="@{/Clientes}">Clientes</a></li>
         <li><a th:href="@{/Productos}">Productos</a></li>
@@ -17,16 +18,34 @@
         <li th:if="${session.usuarioLogueado?.rol == 'ADMIN'}">
             <a th:href="@{/Usuarios}">Usuarios</a>
         </li>
+
+        <li th:if="${session.usuarioLogueado != null}">
+            <div class="user-display">
+                <img th:src="${session.usuarioLogueado.rol == 'ADMIN'}
+            ? @{/img/admin.jpg}
+            : @{/img/user.png}"
+                     class="user-avatar" alt="Avatar">
+
+                <div class="user-text">
+                    <span class="u-name" th:text="${session.usuarioLogueado.username}">Nombre</span>
+                    <span class="u-role" th:text="${session.usuarioLogueado.rol}">ROL</span>
+                </div>
+            </div>
+        </li>
+
         <li><a th:href="@{/logout}" class="logout">Cerrar sesión</a></li>
     </ul>
 </nav>
 
 <div class="hero">
-    <h1>Bienvenido a la Tienda Virtual</h1>
+    <h1 th:if="${session.usuarioLogueado != null}">
+        ¡Bienvenido, <span th:text="${session.usuarioLogueado.username}">Usuario</span>!
+    </h1>
+    <h1 th:unless="${session.usuarioLogueado != null}">Bienvenido a la Tienda Virtual</h1>
     <p>Gestiona tus clientes, productos, ventas y usuarios desde aquí</p>
 </div>
 
-<div th:if="${param.logout}" class="alert alert-info">
+<div th:if="${param.logout}" class="alert alert-info" style="text-align: center; color: white; padding: 10px;">
     Has cerrado sesión correctamente.
 </div>
 
@@ -38,7 +57,7 @@
     </a>
 
     <a th:href="@{/Productos}" class="card">
-        <div class="card-icon" style="background:#e8f8ff">📦</div>
+        <div class="card-icon" style="background:#e8f8ff">🗃️</div>
         <h3>Productos</h3>
         <p>Administra el catálogo y stock de productos</p>
     </a>
@@ -50,7 +69,7 @@
     </a>
 
     <a th:href="@{/DetalleVenta}" class="card">
-        <div class="card-icon" style="background:#e8e8ff">📋</div>
+        <div class="card-icon" style="background:#e8e8ff">🗒️</div>
         <h3>Detalle Venta</h3>
         <p>Ver el desglose de artículos por cada factura</p>
     </a>
