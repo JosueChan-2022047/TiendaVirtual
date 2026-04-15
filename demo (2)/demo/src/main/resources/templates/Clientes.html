@@ -1,10 +1,131 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Gestión de Clientes</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/ClientesP.css}">
 </head>
-<body>
+<body class="bg-light">
+
+<nav class="navbar mb-4 custom-nav">
+    <div class="container-fluid">
+        <a th:href="@{/home}" class="back-link">⬅ Volver al Home</a>
+        <span class="navbar-title">Gestión de Clientes</span>
+    </div>
+</nav>
+
+<div class="container bg-white p-4 shadow-sm rounded">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2>Listado de Clientes</h2>
+        <button type="button" class="btn btn-success" onclick="nuevoCliente()">
+            + Nuevo Cliente
+        </button>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead class="table-dark">
+            <tr>
+                <th>DPI</th>
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>Dirección</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="cliente : ${listaClientes}">
+                <td th:text="${cliente.dpi_cliente}">1001</td>
+                <td th:text="${cliente.nombre_cliente}">Juan</td>
+                <td th:text="${cliente.apellido_cliente}">Pérez</td>
+                <td th:text="${cliente.direccion}">Ciudad de Guatemala</td>
+                <td>
+                    <span class="badge"
+                          th:classappend="${cliente.estado == 1 ? 'bg-primary' : 'bg-danger'}"
+                          th:text="${cliente.estado == 1 ? 'Activo' : 'Inactivo'}">Activo</span>
+                </td>
+                <td>
+                    <button class="btn btn-sm btn-warning"
+                            th:onclick="prepararEditar([[${cliente.dpi_cliente}]], [[${cliente.nombre_cliente}]], [[${cliente.apellido_cliente}]], [[${cliente.direccion}]], [[${cliente.estado}]])">
+                        Editar
+                    </button>
+
+                    <a th:href="@{/Clientes/eliminar/{id}(id=${cliente.dpi_cliente})}"
+                       class="btn btn-sm btn-danger"
+                       onclick="return confirm('¿Seguro que deseas eliminar este cliente?')">Eliminar</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="modal fade" id="clienteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTitle">Nuevo Cliente</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form th:action="@{/Clientes/guardar}" method="post">
+                <div class="modal-body">
+                    <input type="hidden" name="dpi_cliente" id="modal_dpi">
+
+                    <div class="mb-3">
+                        <label class="form-label">Nombre</label>
+                        <input type="text" name="nombre_cliente" id="modal_nombre" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Apellido</label>
+                        <input type="text" name="apellido_cliente" id="modal_apellido" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Dirección</label>
+                        <input type="text" name="direccion" id="modal_direccion" class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Estado</label>
+                        <select name="estado" id="modal_estado" class="form-select">
+                            <option value="1">Activo</option>
+                            <option value="0">Inactivo</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    const modal = new bootstrap.Modal(document.getElementById('clienteModal'));
+
+    function nuevoCliente() {
+        document.getElementById('modalTitle').innerText = 'Nuevo Cliente';
+        document.getElementById('modal_dpi').value = ''; // Limpiar ID para que sea INSERT
+        document.getElementById('modal_nombre').value = '';
+        document.getElementById('modal_apellido').value = '';
+        document.getElementById('modal_direccion').value = '';
+        document.getElementById('modal_estado').value = '1';
+        modal.show();
+    }
+
+    function prepararEditar(dpi, nombre, apellido, direccion, estado) {
+        document.getElementById('modalTitle').innerText = 'Editar Cliente';
+        document.getElementById('modal_dpi').value = dpi; // Poner ID para que sea UPDATE
+        document.getElementById('modal_nombre').value = nombre;
+        document.getElementById('modal_apellido').value = apellido;
+        document.getElementById('modal_direccion').value = direccion;
+        document.getElementById('modal_estado').value = estado;
+        modal.show();
+    }
+</script>
 
 </body>
 </html>
