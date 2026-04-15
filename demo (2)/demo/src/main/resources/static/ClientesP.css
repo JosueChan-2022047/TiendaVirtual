@@ -1,0 +1,133 @@
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #f8fafc !important;
+}
+
+/* Barra de navegación con gradiente para que combine con tu Home */
+.custom-nav {
+    background: linear-gradient(135deg, #11998e, #38ef7d);
+    padding: 18px 25px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.back-link {
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+    padding: 8px 15px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.15);
+    transition: all 0.3s ease;
+}
+
+.back-link:hover {
+    background: rgba(255, 255, 255, 0.3);
+    color: white;
+    transform: translateX(-3px); /* Pequeño movimiento a la izquierda */
+}
+
+.navbar-title {
+    color: white;
+    font-size: 1.6rem;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+}
+
+
+.container {
+    margin-top: 35px;
+    border-radius: 16px;
+    border: none;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05) !important;
+    overflow: hidden;
+}
+
+h2 {
+    color: #1e293b;
+    font-weight: 700;
+    margin-bottom: 0;
+}
+
+/* Estilo de la tabla */
+.table {
+    margin-bottom: 0;
+}
+
+.table thead th {
+    background-color: #1e293b !important; /* Color pizarra oscuro */
+    color: #f8fafc;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 1px;
+    padding: 16px;
+    border: none;
+}
+
+.table tbody td {
+    padding: 16px;
+    vertical-align: middle;
+    color: #475569;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+/* Hover de filas más elegante */
+.table-hover tbody tr:hover {
+    background-color: #f8fafc !important;
+    transition: all 0.2s;
+}
+
+/* Diseño de los Badges (Estado) */
+.badge {
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+}
+
+.bg-primary { background-color: #e0f2fe !important; color: #0369a1 !important; } /* Azul suave */
+.bg-danger { background-color: #fee2e2 !important; color: #b91c1c !important; } /* Rojo suave */
+
+/* Botones de acción mejorados */
+.btn {
+    border-radius: 8px;
+    font-weight: 600;
+    transition: all 0.2s;
+}
+
+.btn-success {
+    background: #11998e;
+    border: none;
+    padding: 10px 20px;
+}
+
+.btn-success:hover {
+    background: #0d8279;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(17, 153, 142, 0.3);
+}
+
+.btn-warning {
+    background-color: #fef3c7;
+    border: none;
+    color: #92400e;
+}
+
+.btn-warning:hover {
+    background-color: #fde68a;
+    color: #78350f;
+}
+
+.btn-danger {
+    background-color: #fee2e2;
+    border: none;
+    color: #991b1b;
+}
+
+.btn-danger:hover {
+    background-color: #fecaca;
+    color: #7f1d1d;
+}
